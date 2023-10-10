@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import "./App.css"
+import { useState, useEffect } from 'react';
 import Events from './components/Events';
+import { Link } from 'react-router-dom';
 
 const CLIENT_ID = "1036190372990-jsvj0bi0h9ldghov6irvm1nc7kroivrp.apps.googleusercontent.com";
 const API_KEY = "AIzaSyD2kw7me0dI7k0D08JEi7DZxdOyfW8T-Fs";
@@ -32,13 +32,13 @@ function App() {
     gsiScript.onload = gisLoaded;
     document.body.appendChild(gsiScript);
 
-    document.getElementById('signout_button').style.visibility = 'hidden';
-    document.getElementById('authorize_button').style.visibility = 'visible';
-    document.getElementById('refresh_button').style.visibility = 'hidden';
+    document.getElementById('signout_button').style.display = 'none';
+    document.getElementById('authorize_button').style.display = 'block';
+    document.getElementById('refresh_button').style.display = 'none';
     return () => {
       // Cleanup: Remove the script elements when the component unmounts
-      document.body.removeChild(script);
-      document.body.removeChild(gsiScript);
+      // document.body.removeChild(script);
+      // document.body.removeChild(gsiScript);
     };
   }, []);
 
@@ -68,7 +68,8 @@ function App() {
 
   const maybeEnableButtons = () => {
     if (gapiInited && gisInited) {
-      document.getElementById('authorize_button').style.visibility = 'visible';
+      document.getElementById('authorize_button').style.display = 'block';
+      document.getElementById('authorize_button_Div').style.display = 'block';
     }
   };
 
@@ -79,9 +80,10 @@ function App() {
       if (resp.error !== undefined) {
         throw resp;
       }
-      document.getElementById('signout_button').style.visibility = 'visible';
-      document.getElementById('authorize_button').style.visibility = 'hidden';
-      document.getElementById('refresh_button').style.visibility = 'visible';
+      document.getElementById('signout_button').style.display = 'block';
+      document.getElementById('authorize_button').style.display = 'none';
+      document.getElementById('authorize_button_Div').style.display = 'none';
+      document.getElementById('refresh_button').style.display = 'block';
       // document.getElementById('authorize_button').innerText = 'Refresh';
       await listUpcomingEvents();
     };
@@ -94,20 +96,22 @@ function App() {
   };
 
   const handleSignoutClick = () => {
-    console.log(tokenClient)
+    // console.log(tokenClient)
     const token = window.gapi.client.getToken();
     if (token !== null) {
       google.accounts.oauth2.revoke(token.access_token);
       window.gapi.client.setToken('');
       setEvents([]);
       // document.getElementById('authorize_button').innerText = 'Connect with Google Calendar';
-      document.getElementById('authorize_button').style.visibility = 'visible';
-      document.getElementById('signout_button').style.visibility = 'hidden';
-      document.getElementById('refresh_button').style.visibility = 'hidden';
+      document.getElementById('authorize_button').style.display = 'block';
+      document.getElementById('authorize_button_Div').style.display = 'block';
+      document.getElementById('signout_button').style.display = 'none';
+      document.getElementById('refresh_button').style.display = 'none';
     }
   };
 
   const listUpcomingEvents = async () => {
+    // console.log(window.gapi)
     try {
       const request = {
         calendarId: 'primary',
@@ -126,37 +130,47 @@ function App() {
   };
 
   return (
-    <div>
-      <div>
-        <button id="authorize_button" onClick={handleAuthClick}>
-          Connect with Google Calendar
-        </button>
+    <div className='relative h-screen w-full bg-gradient-to-r from-green-100 from-10% via-sky-100 via-30% to-pink-100 to-40%'>
+      <div className='z-50 absolute flex w-full flex-col md:flex-row md:w-[calc(100%-90px)] justify-around items-center md:mx-10 my-20'>
+        <div className='my-5 md:my-0 bg-cyan-500 rounded-md hover:bg-cyan-600 px-10 py-2'>
+          <Link to="/profile">Profile</Link>
+        </div>
+        <div id='authorize_button_Div' className='my-20 md:my-0 bg-cyan-500 rounded-md hover:bg-cyan-600 px-10 py-2'>
+          <button id="authorize_button" onClick={handleAuthClick}>
+            Connect with Google Calendar
+          </button>
+        </div>
       </div>
-      <div style={{ marginBottom: "10px" }}>
-        <button id="refresh_button" onClick={listUpcomingEvents}>
-          Refresh
-        </button>
+      <div className='z-40 absolute flex w-full flex-col md:flex-row md:w-[calc(100%-90px)] justify-around items-center md:mx-10 my-40'>
+        <div className='my-20 md:my-0 bg-cyan-500 rounded-md hover:bg-cyan-600 px-10 py-2' id="refresh_button" onClick={listUpcomingEvents}>
+          <button >
+            Refresh
+          </button>
+        </div>
       </div>
-      <div>
-        <button id="signout_button" onClick={handleSignoutClick}>
-          Sign Out
-        </button>
-      </div>
-
-      <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
-        {errorMessage || (
-          <div>
-            {events.length === 0 ? (
-              ''
-            ) : (
-              <>
-                <span>Events:</span>
-                <Events events={events} />
-              </>
-            )}
+      <div className='z-0 absolute md:mx-8 my-60 w-full md:w-[calc(100%-200px)]'>
+        <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
+          {errorMessage || (
+            <div className='w-full flex-col md:flex-row md:w-[calc(100%-90px)] justify-around items-center md:mx-10'>
+              {events.length === 0 ? (
+                ''
+              ) : (
+                <>
+                  {/* <span className='absolute -my-6 mx-4 md:-my-10'>Events:</span> */}
+                  <Events events={events} />
+                </>
+              )}
+            </div>
+          )}
+        </pre>
+        <div className='flex justify-center my-20 mx-36 md:my-0 md:mx-80 '>
+          <div className='bg-cyan-500 rounded-md hover:bg-cyan-600 '>
+            <button className='px-4 py-2' id="signout_button" onClick={handleSignoutClick}>
+              Sign Out
+            </button>
           </div>
-        )}
-      </pre>
+        </div>
+      </div>
     </div>
   );
 }

@@ -6,11 +6,16 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Profile from './components/Profile.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 ReactDOM.createRoot(document.getElementById('root')).render(
