@@ -24,7 +24,7 @@ Check out the live demo [here](link-to-live-demo).
 
 ## Installation
 
-git clone https://github.com/your-username/react-google-calendar.git
+git clone [https://github.com/yash06112002/Calender-Events.git](https://github.com/yash06112002/Calender-Events)
 cd react-google-calendar
 npm install
 
