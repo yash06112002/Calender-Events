@@ -24,23 +24,23 @@ Check out the live demo [here](link-to-live-demo).
 
 ## Installation
 
-git clone [https://github.com/yash06112002/Calender-Events.git](https://github.com/yash06112002/Calender-Events)
-cd react-google-calendar
-npm install
+- git clone [https://github.com/yash06112002/Calender-Events.git](https://github.com/yash06112002/Calender-Events)
+- cd react-google-calendar
+- npm install
 
 ## Usage
 
-npm start
-Open your browser and go to http://localhost:3000 to view the app.
+- npm start
+- Open your browser and go to http://localhost:3000 to view the app.
 
 ## Api
 
-Implement OAuth 2.0 authentication with Google Calendar API.
-Fetch and process calendar data.
+- Implement OAuth 2.0 authentication with Google Calendar API.
+- Fetch and process calendar data.
 
 ## Configuration
 
-Create a Google Cloud Platform project and enable the Google Calendar API.
-Configure OAuth 2.0 credentials and set the redirect URL.
-Add the credentials to your frontend and backend configurations.
+- Create a Google Cloud Platform project and enable the Google Calendar API.
+- Configure OAuth 2.0 credentials and set the redirect URL.
+- Add the credentials to your frontend and backend configurations.
 
